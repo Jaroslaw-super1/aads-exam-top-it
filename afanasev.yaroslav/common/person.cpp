@@ -49,4 +49,41 @@ namespace afanasev
     }
     return false;
   }
+
+  int findPersonIndex(const Person * persons, size_t count, size_t id)
+  {
+    for (size_t i = 0; i < count; ++i)
+    {
+      if (persons[i].id == id) return static_cast< int >(i);
+    }
+    return -1;
+  }
+
+  void removePersonById(Person *& persons, size_t & count, size_t id)
+  {
+    int idx = findPersonIndex(persons, count, id);
+    if (idx == -1)
+    {
+      return;
+    }
+    for (size_t i = static_cast< size_t >(idx); i + 1 < count; ++i)
+    {
+      persons[i] = persons[i + 1];
+    }
+    --count;
+  }
+
+  void updateOrAddPerson(Person *& persons, size_t & count, size_t & capacity, size_t id, const std::string & info)
+  {
+    int idx = findPersonIndex(persons, count, id);
+    if (idx != -1)
+    {
+      persons[idx].info = info;
+    }
+    else
+    {
+      Person p{id, info};
+      addPerson(persons, count, capacity, p);
+    }
+  }
 }
